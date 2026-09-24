@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:subnetter/features/subnet/presentation/widgets/binary_ip_display.dart';
 
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -19,6 +20,7 @@ class CidrPage extends StatefulWidget {
 class _CidrPageState extends State<CidrPage> {
   late String _ip = '192.168.0.0';
   late int _prefix = 24;
+  int _resetTick = 0;
 
   String get _cidr => '$_ip/$_prefix';
   void _sync() => context.read<CidrCubit>().setInput(_cidr);
@@ -59,17 +61,21 @@ class _CidrPageState extends State<CidrPage> {
 
                   IpOctetInput(
                     initialValue: _ip,
+                    resetSignal: _resetTick,
                     onChanged: (v) {
                       setState(() => _ip = v);
                       _sync();
                     },
                   ),
 
+                  BinaryIpDisplay(ip: _ip), // <-- new
+                  const SizedBox(height: AppSpacing.lg),
+
                   const SizedBox(height: AppSpacing.lg),
 
                   MaskDropdown(
                     value: _prefix,
-                    label: 'Subnet mask  (/0 – /32)',
+                    label: '${l10n.subnetMask}  (/0 – /32)',
                     onChanged: (p) {
                       setState(() => _prefix = p);
                       _sync();
@@ -77,16 +83,35 @@ class _CidrPageState extends State<CidrPage> {
                   ),
 
                   const SizedBox(height: AppSpacing.lg),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: FilledButton.icon(
-                      onPressed: () {
-                        FocusScope.of(context).unfocus(); // dismiss fields
-                        cubit.calculate();
-                      },
-                      icon: const Icon(Icons.calculate_outlined, size: 18),
-                      label: Text(l10n.calculate),
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              _ip = '192.168.0.0';
+                              _prefix = 24;
+                              _resetTick++;
+                            });
+                            cubit.reset();
+                          },
+                          icon: const Icon(Icons.refresh_rounded, size: 18),
+                          label: Text(l10n.clear),
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: FilledButton.icon(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            cubit.calculate();
+                          },
+                          icon: const Icon(Icons.calculate_outlined, size: 18),
+                          label: Text(l10n.calculate),
+                        ),
+                      ),
+                    ],
                   ),
 
                   if (state.error != null) ...[

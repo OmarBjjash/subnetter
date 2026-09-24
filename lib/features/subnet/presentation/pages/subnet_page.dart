@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:subnetter/features/subnet/presentation/widgets/binary_ip_display.dart';
 
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -61,26 +62,28 @@ class _SubnetPageState extends State<SubnetPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'IP address',
+                    l10n.ipAddress,
                     style: Theme.of(context).textTheme.labelMedium
                         ?.copyWith(color: context.ext.textMuted),
                   ),
                   const SizedBox(height: AppSpacing.sm),
 
                   IpOctetInput(
-                    key: ValueKey(_resetTick),
+                    resetSignal: _resetTick,
                     initialValue: _ip,
                     onChanged: (v) {
                       setState(() => _ip = v);
                       _sync();
                     },
                   ),
+                  BinaryIpDisplay(ip: _ip), // <-- new
+                  const SizedBox(height: AppSpacing.lg),
 
                   const SizedBox(height: AppSpacing.lg),
 
                   MaskDropdown(
                     value: _prefix,
-                    label: 'Subnet mask  (/0 – /32)',
+                    label: '${l10n.subnetMask}  (/0 – /32)',
                     onChanged: (p) {
                       setState(() => _prefix = p);
                       _sync();
@@ -94,8 +97,8 @@ class _SubnetPageState extends State<SubnetPage> {
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(
-                      labelText: 'Number of subnets',
+                    decoration: InputDecoration(
+                      labelText: l10n.numberOfSubnets,
                     ),
                     onChanged: (v) => cubit.setCount(int.tryParse(v) ?? 1),
                   ),

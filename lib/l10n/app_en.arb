@@ -35,5 +35,16 @@
   "themeSystem": "System",
   "themeLight": "Light",
   "themeDark": "Dark",
-  "clear": "Clear"
+  "clear": "Clear",
+  "subnetMask": "Subnet mask",
+  "ipAddress": "IP Address",
+  "copySubnetInfo": "Copy subnet info",
+  "subNetCopied": "Subnet copied to clipboard",
+  "subnetCountError": "Subnet count must be >= 1",
+  "cidrInfoCopied": "CIDR info copied",
+  "copyCIDRInfo": "Copy CIDR info",
+  "invalidOctet": "Invalid octet",
+  "invalidIPv4": "Invalid IPv4",
+  "tooManySubnets":"Too many subnets for this prefix"
+  
 }

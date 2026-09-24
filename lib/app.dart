@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/di/injection.dart';
 import 'core/theme/app_theme.dart';
+import 'features/settings/domain/entities/app_settings.dart';
 import 'features/settings/presentation/cubit/settings_cubit.dart';
 import 'features/subnet/presentation/cubit/cidr_cubit.dart';
 import 'features/subnet/presentation/cubit/subnet_cubit.dart';
@@ -21,16 +22,17 @@ class SubnetterApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<SubnetCubit>()),
         BlocProvider(create: (_) => sl<CidrCubit>()),
       ],
-      child: BlocBuilder<SettingsCubit, dynamic>(
-        builder: (context, _) {
-          final s = context.watch<SettingsCubit>().state;
+      // Rebuilds only the MaterialApp when settings change.
+      // No second `context.watch` — that was the source of the conflict.
+      child: BlocBuilder<SettingsCubit, AppSettings>(
+        builder: (context, settings) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             onGenerateTitle: (ctx) => AppLocalizations.of(ctx).appTitle,
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),
-            themeMode: s.themeMode,
-            locale: s.locale,
+            themeMode: settings.themeMode,
+            locale: settings.locale,
             supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: const [
               AppLocalizations.delegate,

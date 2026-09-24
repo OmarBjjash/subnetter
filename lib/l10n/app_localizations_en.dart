@@ -105,4 +105,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clear => 'Clear';
+
+  @override
+  String get subnetMask => 'Subnet mask';
+
+  @override
+  String get ipAddress => 'IP Address';
+
+  @override
+  String get copySubnetInfo => 'Copy subnet info';
+
+  @override
+  String get subNetCopied => 'Subnet copied to clipboard';
+
+  @override
+  String get subnetCountError => 'Subnet count must be >= 1';
+
+  @override
+  String get cidrInfoCopied => 'CIDR info copied';
+
+  @override
+  String get copyCIDRInfo => 'Copy CIDR info';
+
+  @override
+  String get invalidOctet => 'Invalid octet';
+
+  @override
+  String get invalidIPv4 => 'Invalid IPv4';
+
+  @override
+  String get tooManySubnets => 'Too many subnets for this prefix';
 }

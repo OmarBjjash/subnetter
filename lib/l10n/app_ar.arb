@@ -20,14 +20,14 @@
   "calculate": "احسب",
 
   "network": "عنوان الشبكة",
-  "broadcast": "البث",
+  "broadcast": "عنوان البث",
   "firstUsable": "أول عنوان متاح",
   "lastUsable": "آخر عنوان متاح",
   "netmask": "قناع الشبكة",
   "wildcard": "قناع عكسي",
   "usableHosts": "المضيفون المتاحون",
   "totalAddresses": "إجمالي العناوين",
-  "ipClass": "فئة IP",
+  "ipClass": "فئة الـ IP",
   "private": "خاص",
 
   "settingsAppearance": "المظهر",
@@ -35,5 +35,16 @@
   "themeSystem": "النظام",
   "themeLight": "فاتح",
   "themeDark": "داكن",
-  "clear": "مسح"
+  "clear": "مسح",
+  "subnetMask": "قناع الشبكه",
+  "ipAddress": "عنوان الـ IP",
+  "copySubnetInfo": "نسخ معلومات الشبكة",
+  "subNetCopied": "تم نسخ معلومات الشبكه الى الحافظة",
+  "subnetCountError": "يجب ان تكون عدد الشبكات المراد تقسيمها >= 1",
+  "cidrInfoCopied": "تم نسخ معلومات شبكة الـ CIDR",
+  "copyCIDRInfo": "نسخ معلومات شبكة الـ CIDR",
+  "invalidOctet": "أُكتيت غير صالح",
+  "invalidIPv4": "IPv4 غير صالح",
+  "tooManySubnets":"عدد كبير من الشبكات من هذا الـ prefix"
+
 }

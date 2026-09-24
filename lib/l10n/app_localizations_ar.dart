@@ -62,7 +62,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get network => 'عنوان الشبكة';
 
   @override
-  String get broadcast => 'البث';
+  String get broadcast => 'عنوان البث';
 
   @override
   String get firstUsable => 'أول عنوان متاح';
@@ -83,7 +83,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get totalAddresses => 'إجمالي العناوين';
 
   @override
-  String get ipClass => 'فئة IP';
+  String get ipClass => 'فئة الـ IP';
 
   @override
   String get private => 'خاص';
@@ -105,4 +105,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clear => 'مسح';
+
+  @override
+  String get subnetMask => 'قناع الشبكه';
+
+  @override
+  String get ipAddress => 'عنوان الـ IP';
+
+  @override
+  String get copySubnetInfo => 'نسخ معلومات الشبكة';
+
+  @override
+  String get subNetCopied => 'تم نسخ معلومات الشبكه الى الحافظة';
+
+  @override
+  String get subnetCountError => 'يجب ان تكون عدد الشبكات المراد تقسيمها >= 1';
+
+  @override
+  String get cidrInfoCopied => 'تم نسخ معلومات شبكة الـ CIDR';
+
+  @override
+  String get copyCIDRInfo => 'نسخ معلومات شبكة الـ CIDR';
+
+  @override
+  String get invalidOctet => 'أُكتيت غير صالح';
+
+  @override
+  String get invalidIPv4 => 'IPv4 غير صالح';
+
+  @override
+  String get tooManySubnets => 'عدد كبير من الشبكات من هذا الـ prefix';
 }

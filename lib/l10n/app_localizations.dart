@@ -289,6 +289,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear'**
   String get clear;
+
+  /// No description provided for @subnetMask.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnet mask'**
+  String get subnetMask;
+
+  /// No description provided for @ipAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'IP Address'**
+  String get ipAddress;
+
+  /// No description provided for @copySubnetInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy subnet info'**
+  String get copySubnetInfo;
+
+  /// No description provided for @subNetCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnet copied to clipboard'**
+  String get subNetCopied;
+
+  /// No description provided for @subnetCountError.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnet count must be >= 1'**
+  String get subnetCountError;
+
+  /// No description provided for @cidrInfoCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'CIDR info copied'**
+  String get cidrInfoCopied;
+
+  /// No description provided for @copyCIDRInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy CIDR info'**
+  String get copyCIDRInfo;
+
+  /// No description provided for @invalidOctet.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid octet'**
+  String get invalidOctet;
+
+  /// No description provided for @invalidIPv4.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid IPv4'**
+  String get invalidIPv4;
+
+  /// No description provided for @tooManySubnets.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many subnets for this prefix'**
+  String get tooManySubnets;
 }
 
 class _AppLocalizationsDelegate

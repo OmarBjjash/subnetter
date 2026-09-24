@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:subnetter/l10n/app_localizations.dart';
 
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -38,14 +39,15 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
   }
 
   Future<void> _copy() async {
+    final l10n = AppLocalizations.of(context);
     await Clipboard.setData(ClipboardData(text: _plainText()));
     if (!mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        const SnackBar(
-          content: Text('Subnet copied to clipboard'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text(l10n.subNetCopied),
+          duration: const Duration(seconds: 2),
         ),
       );
   }
@@ -54,6 +56,7 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final t = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -103,7 +106,7 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
                       ),
                     ),
                     IconButton(
-                      tooltip: 'Copy subnet info',
+                      tooltip: l10n.copySubnetInfo,
                       splashRadius: 20,
                       visualDensity: VisualDensity.compact,
                       icon: Icon(
@@ -136,25 +139,33 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _row(context, 'Network', widget.subnet.networkAddress),
-                        _row(context, 'Broadcast', widget.subnet.broadcast),
                         _row(
                           context,
-                          'First usable',
+                          l10n.network,
+                          widget.subnet.networkAddress,
+                        ),
+                        _row(context, l10n.broadcast, widget.subnet.broadcast),
+                        _row(
+                          context,
+                          l10n.firstUsable,
                           widget.subnet.firstUsable,
                         ),
-                        _row(context, 'Last usable', widget.subnet.lastUsable),
-                        _row(context, 'Netmask', widget.subnet.netmask),
-                        _row(context, 'Wildcard', widget.subnet.wildcard),
                         _row(
                           context,
-                          'Total addresses',
+                          l10n.lastUsable,
+                          widget.subnet.lastUsable,
+                        ),
+                        _row(context, l10n.netmask, widget.subnet.netmask),
+                        _row(context, l10n.wildcard, widget.subnet.wildcard),
+                        _row(
+                          context,
+                          l10n.totalAddresses,
                           '${widget.subnet.totalAddresses}',
                           mono: false,
                         ),
                         _row(
                           context,
-                          'Usable hosts',
+                          l10n.usableHosts,
                           '${widget.subnet.usableHosts}',
                           mono: false,
                         ),

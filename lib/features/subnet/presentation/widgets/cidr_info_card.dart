@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:subnetter/l10n/app_localizations.dart';
+
 import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/cidr_info.dart';
@@ -37,20 +39,24 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
   }
 
   Future<void> _copy() async {
+    final l10n = AppLocalizations.of(context);
     await Clipboard.setData(ClipboardData(text: _plainText()));
     if (!mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(
-        content: Text('CIDR info copied'),
-        duration: Duration(seconds: 2),
-      ));
+      ..showSnackBar(
+        SnackBar(
+          content: Text(l10n.cidrInfoCopied),
+          duration: Duration(seconds: 2),
+        ),
+      );
   }
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final t = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -69,8 +75,7 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.hub_outlined,
-                        size: 18, color: scheme.onPrimary),
+                    Icon(Icons.hub_outlined, size: 18, color: scheme.onPrimary),
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
@@ -83,11 +88,14 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
                       ),
                     ),
                     IconButton(
-                      tooltip: 'Copy CIDR info',
+                      tooltip: l10n.copyCIDRInfo,
                       splashRadius: 20,
                       visualDensity: VisualDensity.compact,
-                      icon: Icon(Icons.copy_rounded,
-                          size: 18, color: scheme.onPrimary),
+                      icon: Icon(
+                        Icons.copy_rounded,
+                        size: 18,
+                        color: scheme.onPrimary,
+                      ),
                       onPressed: _copy,
                     ),
                     Icon(
@@ -113,21 +121,44 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _row(context, 'Network', widget.info.networkAddress),
-                        _row(context, 'Broadcast', widget.info.broadcast),
-                        _row(context, 'First usable', widget.info.firstUsable),
-                        _row(context, 'Last usable', widget.info.lastUsable),
-                        _row(context, 'Netmask', widget.info.netmask),
-                        _row(context, 'Wildcard', widget.info.wildcard),
-                        _row(context, 'Total addresses',
-                            '${widget.info.totalAddresses}', mono: false),
-                        _row(context, 'Usable hosts',
-                            '${widget.info.usableAddresses}', mono: false),
-                        _row(context, 'IP class', widget.info.ipClass,
-                            mono: false),
-                        _row(context, 'Private',
-                            widget.info.isPrivate ? '✔' : '—',
-                            mono: false),
+                        _row(context, l10n.network, widget.info.networkAddress),
+                        _row(context, l10n.broadcast, widget.info.broadcast),
+                        _row(
+                          context,
+                          l10n.firstUsable,
+                          widget.info.firstUsable,
+                        ),
+                        _row(context, l10n.lastUsable, widget.info.lastUsable),
+                        _row(context, l10n.netmask, widget.info.netmask),
+                        _row(context, l10n.wildcard, widget.info.wildcard),
+                        _row(
+                          context,
+                          l10n.totalAddresses,
+                          '${widget.info.totalAddresses}',
+
+                          mono: false,
+                        ),
+                        _row(
+                          context,
+                          l10n.usableHosts,
+                          '${widget.info.usableAddresses}',
+                          mono: false,
+                        ),
+                        _row(
+                          context,
+                          l10n.ipClass,
+                          widget.info.ipClass,
+                          mono: false,
+                        ),
+                        _row(
+                          context,
+                          l10n.private,
+                          widget.info.isPrivate ? '✔' : '✘',
+                          valueColor: widget.info.isPrivate
+                              ? scheme.primary
+                              : scheme.error,
+                          mono: false,
+                        ),
                       ],
                     ),
                   )
@@ -138,8 +169,13 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
     );
   }
 
-  Widget _row(BuildContext context, String label, String value,
-      {bool mono = true}) {
+  Widget _row(
+    BuildContext context,
+    String label,
+    String value, {
+    Color? valueColor,
+    bool mono = true,
+  }) {
     final t = Theme.of(context).textTheme;
     final ext = context.ext;
     return Padding(
@@ -149,8 +185,10 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
         children: [
           SizedBox(
             width: 148,
-            child: Text(label,
-                style: t.bodyMedium?.copyWith(color: ext.textMuted)),
+            child: Text(
+              label,
+              style: t.bodyMedium?.copyWith(color: ext.textMuted),
+            ),
           ),
           Expanded(
             child: SelectableText(
@@ -158,6 +196,7 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
               style: t.bodyMedium?.copyWith(
                 fontFamily: mono ? 'monospace' : null,
                 fontWeight: FontWeight.w500,
+                color: valueColor,
               ),
             ),
           ),
