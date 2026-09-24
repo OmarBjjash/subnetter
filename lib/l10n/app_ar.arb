@@ -1,0 +1,39 @@
+{
+  "@@locale": "ar",
+  "appTitle": "سبنتّر",
+  "tabSubnet": "الشبكات",
+  "tabCidr": "معلومات CIDR",
+  "tabSettings": "الإعدادات",
+
+  "subnetTitle": "حاسبة الشبكات الفرعية",
+  "subnetSubtitle": "قسّم شبكة إلى شبكات متساوية أو بأطوال متغيّرة (VLSM).",
+  "cidrTitle": "معلومات CIDR",
+  "cidrSubtitle": "تفاصيل كتلة IP/CIDR واحدة.",
+
+  "input": "المدخلات",
+  "results": "النتائج",
+  "cidrInfo": "معلومات CIDR",
+  "ipCidrLabel": "IP / CIDR",
+  "numberOfSubnets": "عدد الشبكات",
+  "modeEqual": "متساوية",
+  "modeVlsm": "VLSM",
+  "calculate": "احسب",
+
+  "network": "عنوان الشبكة",
+  "broadcast": "البث",
+  "firstUsable": "أول عنوان متاح",
+  "lastUsable": "آخر عنوان متاح",
+  "netmask": "قناع الشبكة",
+  "wildcard": "قناع عكسي",
+  "usableHosts": "المضيفون المتاحون",
+  "totalAddresses": "إجمالي العناوين",
+  "ipClass": "فئة IP",
+  "private": "خاص",
+
+  "settingsAppearance": "المظهر",
+  "settingsLanguage": "اللغة",
+  "themeSystem": "النظام",
+  "themeLight": "فاتح",
+  "themeDark": "داكن",
+  "clear": "مسح"
+}

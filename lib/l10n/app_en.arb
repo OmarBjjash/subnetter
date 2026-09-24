@@ -1,0 +1,39 @@
+{
+  "@@locale": "en",
+  "appTitle": "Subnetter",
+  "tabSubnet": "Subnets",
+  "tabCidr": "CIDR Info",
+  "tabSettings": "Settings",
+
+  "subnetTitle": "Subnet Calculator",
+  "subnetSubtitle": "Split a network into equal-size or VLSM subnets.",
+  "cidrTitle": "CIDR Information",
+  "cidrSubtitle": "Details about a single IP/CIDR block.",
+
+  "input": "Input",
+  "results": "Results",
+  "cidrInfo": "CIDR information",
+  "ipCidrLabel": "IP / CIDR",
+  "numberOfSubnets": "Number of subnets",
+  "modeEqual": "Equal-size",
+  "modeVlsm": "VLSM",
+  "calculate": "Calculate",
+
+  "network": "Network",
+  "broadcast": "Broadcast",
+  "firstUsable": "First usable",
+  "lastUsable": "Last usable",
+  "netmask": "Netmask",
+  "wildcard": "Wildcard",
+  "usableHosts": "Usable hosts",
+  "totalAddresses": "Total addresses",
+  "ipClass": "IP class",
+  "private": "Private",
+
+  "settingsAppearance": "Appearance",
+  "settingsLanguage": "Language",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "clear": "Clear"
+}

@@ -1,0 +1,13 @@
+flutter_native_splash:
+  color: "#F7F4EF" ##====================================[REQUIRED]==========
+  color_dark: "#232120"
+  image: assets/app-icon/subnetter-splash.png
+  fullscreen: true
+
+  #! ANDROID 12+ configuration:
+  android_12:
+    # background color
+    color: "#F7F4EF"
+    color_dark: "#232120"
+    image: assets/app-icon/splash-12.png
+    fullscreen: true
