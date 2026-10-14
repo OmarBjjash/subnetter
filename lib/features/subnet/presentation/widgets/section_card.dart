@@ -25,7 +25,7 @@ class SectionCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(child: Text(title, style: t.titleMedium)),
-                if (trailing != null) trailing!,
+                ?trailing,
               ],
             ),
             const SizedBox(height: AppSpacing.md),

@@ -29,11 +29,60 @@ android {
         versionName = flutter.versionName
     }
 
+    androidResources {
+        // Strip unused localized resources from dependencies (keeping app-supported locales: en, ar)
+        localeFilters += listOf("en", "ar")
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            
+            // 1 & 2: Enable full R8 code shrinking and resource shrinking
+            isMinifyEnabled = true
+            isShrinkResources = true
+            
+            // 3: Use R8/ProGuard aggressive optimization rules
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            // 4: Strip native debugging symbols
+            ndk {
+                debugSymbolLevel = "NONE"
+            }
+        }
+    }
+
+    // Strip unneeded metadata files and native libraries
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/license.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/notice.txt",
+                "META-INF/ASL2.0",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/*.kotlin_module",
+                "META-INF/*.version",
+                "**/LICENSE.txt",
+                "**/NOTICE.txt"
+            )
+        }
+        jniLibs {
+            excludes += setOf(
+                "**/libflutter.so.debug",
+                "**/libapp.so.debug"
+            )
+            useLegacyPackaging = true
         }
     }
 }

@@ -15,7 +15,7 @@ Future<void> main() async {
   await setupDI();
 
   // 4. Wait for the remainder of your 3-second delay
-  await Future.delayed(const Duration(seconds: 3));
+  await Future.delayed(const Duration(milliseconds: 1300));
 
   // 5. Remove the splash and run the app
   FlutterNativeSplash.remove();

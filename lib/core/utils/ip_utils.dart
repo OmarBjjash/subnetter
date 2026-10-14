@@ -5,8 +5,9 @@ class Ipv4 {
     int out = 0;
     for (final p in parts) {
       final n = int.tryParse(p);
-      if (n == null || n < 0 || n > 255)
+      if (n == null || n < 0 || n > 255) {
         throw const FormatException('Invalid octet');
+      }
       out = (out << 8) | n;
     }
     return out;

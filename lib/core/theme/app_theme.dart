@@ -206,13 +206,13 @@ abstract final class AppTheme {
           final selected = states.contains(WidgetState.selected);
           return IconThemeData(
             size: 24,
-            color: selected ? onPrimary : text.withOpacity(0.75),
+            color: selected ? onPrimary : text.withValues(alpha: 0.75),
           );
         }),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
           return AppTypography.textTheme.labelMedium?.copyWith(
-            color: selected ? primary : text.withOpacity(0.75),
+            color: selected ? primary : text.withValues(alpha: 0.75),
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
           );
         }),
