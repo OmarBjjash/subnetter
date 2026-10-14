@@ -1,2 +1,1 @@
-# Exclude the web folder from language statistics
-web/ linguist-vendored
+web/** linguist-detectable=false
