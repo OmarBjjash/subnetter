@@ -155,7 +155,7 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
                           l10n.private,
                           widget.info.isPrivate ? '✔' : '✘',
                           valueColor: widget.info.isPrivate
-                              ? scheme.primary
+                              ? Colors.green
                               : scheme.error,
                           mono: false,
                         ),
