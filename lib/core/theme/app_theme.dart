@@ -7,7 +7,7 @@ import 'app_spacing.dart';
 import 'app_typography.dart';
 
 abstract final class AppTheme {
-  static ThemeData light() => _base(
+  static ThemeData light({double textScale = 1.0}) => _base(
     brightness: Brightness.light,
     bg: AppColors.lightBg,
     surface: AppColors.lightSurface,
@@ -22,9 +22,10 @@ abstract final class AppTheme {
     code: AppColors.lightCode,
     success: AppColors.lightSuccess,
     danger: AppColors.lightError,
+    textScale: textScale,
   );
 
-  static ThemeData dark() => _base(
+  static ThemeData dark({double textScale = 1.0}) => _base(
     brightness: Brightness.dark,
     bg: AppColors.darkBg,
     surface: AppColors.darkSurface,
@@ -39,6 +40,7 @@ abstract final class AppTheme {
     code: AppColors.darkCode,
     success: AppColors.darkSuccess,
     danger: AppColors.darkError,
+    textScale: textScale,
   );
 
   static ThemeData _base({
@@ -56,7 +58,13 @@ abstract final class AppTheme {
     required Color code,
     required Color success,
     required Color danger,
+    double textScale = 1.0,
   }) {
+    // Breakpoint-driven typography: the base sizes step up on wide windows.
+    // The OS text scale is applied by Flutter on top of these sizes and is
+    // never clamped here.
+    final scaledType = AppTypography.textTheme.apply(fontSizeFactor: textScale);
+
     final scheme = ColorScheme(
       brightness: brightness,
       primary: primary,
@@ -78,10 +86,7 @@ abstract final class AppTheme {
       brightness: brightness,
       colorScheme: scheme,
       scaffoldBackgroundColor: bg,
-      textTheme: AppTypography.textTheme.apply(
-        bodyColor: text,
-        displayColor: text,
-      ),
+      textTheme: scaledType.apply(bodyColor: text, displayColor: text),
       splashFactory: InkSparkle.splashFactory,
 
       extensions: [
@@ -104,9 +109,7 @@ abstract final class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
-        titleTextStyle: AppTypography.textTheme.titleMedium?.copyWith(
-          color: text,
-        ),
+        titleTextStyle: scaledType.titleMedium?.copyWith(color: text),
       ),
 
       cardTheme: CardThemeData(
@@ -158,7 +161,7 @@ abstract final class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           ),
-          textStyle: AppTypography.textTheme.labelLarge,
+          textStyle: scaledType.labelLarge,
         ),
       ),
 
@@ -190,9 +193,7 @@ abstract final class AppTheme {
               borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
             ),
           ),
-          textStyle: WidgetStateProperty.all(
-            AppTypography.textTheme.labelLarge,
-          ),
+          textStyle: WidgetStateProperty.all(scaledType.labelLarge),
         ),
       ),
 
@@ -211,7 +212,7 @@ abstract final class AppTheme {
         }),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return AppTypography.textTheme.labelMedium?.copyWith(
+          return scaledType.labelMedium?.copyWith(
             color: selected ? primary : text.withValues(alpha: 0.75),
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
           );
@@ -232,7 +233,7 @@ abstract final class AppTheme {
           borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
           border: Border.all(color: border),
         ),
-        textStyle: AppTypography.textTheme.bodySmall?.copyWith(color: text),
+        textStyle: scaledType.bodySmall?.copyWith(color: text),
       ),
     );
   }

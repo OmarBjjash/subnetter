@@ -1,3 +1,4 @@
 web/** linguist-detectable=false
 
 *.html linguist-detectable=false
+graphify-out/graph.json merge=graphify

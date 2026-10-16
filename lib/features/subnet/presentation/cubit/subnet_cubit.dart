@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/errors/app_error.dart';
 import '../../domain/entities/subnet_result.dart';
 import '../../domain/usecases/calculate_subnets.dart';
 
@@ -9,7 +10,7 @@ class SubnetState extends Equatable {
   final int count;
   final SubnetMode mode;
   final SubnetResult? result;
-  final String? error;
+  final AppError? error;
 
   const SubnetState({
     this.cidr = '192.168.0.0/24',
@@ -24,7 +25,7 @@ class SubnetState extends Equatable {
     int? count,
     SubnetMode? mode,
     SubnetResult? result,
-    String? error,
+    AppError? error,
   }) => SubnetState(
     cidr: cidr ?? this.cidr,
     count: count ?? this.count,
@@ -55,12 +56,10 @@ class SubnetCubit extends Cubit<SubnetState> {
     try {
       final r = _calc(cidr: state.cidr, count: state.count, mode: state.mode);
       emit(state.copyWith(result: r, error: null));
-    } catch (e) {
-      emit(
-        state.copyWith(
-          error: e.toString().replaceFirst('FormatException: ', ''),
-        ),
-      );
+    } on AppException catch (e) {
+      emit(state.copyWith(error: e.error));
+    } catch (_) {
+      emit(state.copyWith(error: AppError.unknown));
     }
   }
 }

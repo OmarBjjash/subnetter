@@ -6,28 +6,27 @@ import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/subnet.dart';
 
-class SubnetResultCard extends StatefulWidget {
+/// A single subnet result.
+///
+/// Expansion is *controlled* by the parent so the open/closed state survives
+/// the card being scrolled out of the viewport and rebuilt.
+class SubnetResultCard extends StatelessWidget {
   final int index;
   final Subnet subnet;
-  final bool initiallyExpanded;
+  final bool expanded;
+  final ValueChanged<bool> onExpansionChanged;
 
   const SubnetResultCard({
     super.key,
     required this.index,
     required this.subnet,
-    this.initiallyExpanded = false,
+    required this.expanded,
+    required this.onExpansionChanged,
   });
 
-  @override
-  State<SubnetResultCard> createState() => _SubnetResultCardState();
-}
-
-class _SubnetResultCardState extends State<SubnetResultCard> {
-  late bool _expanded = widget.initiallyExpanded;
-
   String _plainText() {
-    final s = widget.subnet;
-    return 'Subnet #${widget.index}: ${s.cidr}\n'
+    final s = subnet;
+    return 'Subnet #$index: ${s.cidr}\n'
         '  Network         : ${s.networkAddress}\n'
         '  Broadcast       : ${s.broadcast}\n'
         '  First usable    : ${s.firstUsable}\n'
@@ -38,10 +37,10 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
         '  Usable hosts    : ${s.usableHosts}\n';
   }
 
-  Future<void> _copy() async {
+  Future<void> _copy(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     await Clipboard.setData(ClipboardData(text: _plainText()));
-    if (!mounted) return;
+    if (!context.mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
@@ -67,7 +66,7 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
           Material(
             color: scheme.primary,
             child: InkWell(
-              onTap: () => setState(() => _expanded = !_expanded),
+              onTap: () => onExpansionChanged(!expanded),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
@@ -87,7 +86,7 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
                         ),
                       ),
                       child: Text(
-                        '#${widget.index}',
+                        '#$index',
                         style: t.labelMedium?.copyWith(
                           color: scheme.onPrimary,
                           fontWeight: FontWeight.w700,
@@ -97,7 +96,7 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Text(
-                        widget.subnet.cidr,
+                        subnet.cidr,
                         style: t.titleMedium?.copyWith(
                           color: scheme.onPrimary,
                           fontFamily: 'monospace',
@@ -114,10 +113,10 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
                         size: 18,
                         color: scheme.onPrimary,
                       ),
-                      onPressed: _copy,
+                      onPressed: () => _copy(context),
                     ),
                     Icon(
-                      _expanded
+                      expanded
                           ? Icons.expand_less_rounded
                           : Icons.expand_more_rounded,
                       color: scheme.onPrimary,
@@ -129,44 +128,42 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
           ),
 
           // ----- Body -----
+          // The open/closed state comes from the parent, so a card that is
+          // scrolled out of the viewport and rebuilt comes back in the state the
+          // user left it in instead of collapsing.
           AnimatedSize(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOutCubic,
             alignment: Alignment.topCenter,
-            child: _expanded
+            child: expanded
                 ? Padding(
                     padding: const EdgeInsets.all(AppSpacing.lg),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    child: Table(
+                      // The label column is sized to its widest label, so
+                      // every value starts at the same x and the rows read as
+                      // one aligned column. The value column takes the rest.
+                      columnWidths: const {
+                        0: IntrinsicColumnWidth(),
+                        1: FlexColumnWidth(),
+                      },
+                      defaultVerticalAlignment: TableCellVerticalAlignment.top,
                       children: [
-                        _row(
-                          context,
-                          l10n.network,
-                          widget.subnet.networkAddress,
-                        ),
-                        _row(context, l10n.broadcast, widget.subnet.broadcast),
-                        _row(
-                          context,
-                          l10n.firstUsable,
-                          widget.subnet.firstUsable,
-                        ),
-                        _row(
-                          context,
-                          l10n.lastUsable,
-                          widget.subnet.lastUsable,
-                        ),
-                        _row(context, l10n.netmask, widget.subnet.netmask),
-                        _row(context, l10n.wildcard, widget.subnet.wildcard),
+                        _row(context, l10n.network, subnet.networkAddress),
+                        _row(context, l10n.broadcast, subnet.broadcast),
+                        _row(context, l10n.firstUsable, subnet.firstUsable),
+                        _row(context, l10n.lastUsable, subnet.lastUsable),
+                        _row(context, l10n.netmask, subnet.netmask),
+                        _row(context, l10n.wildcard, subnet.wildcard),
                         _row(
                           context,
                           l10n.totalAddresses,
-                          '${widget.subnet.totalAddresses}',
+                          '${subnet.totalAddresses}',
                           mono: false,
                         ),
                         _row(
                           context,
                           l10n.usableHosts,
-                          '${widget.subnet.usableHosts}',
+                          '${subnet.usableHosts}',
                           mono: false,
                         ),
                       ],
@@ -179,7 +176,10 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
     );
   }
 
-  Widget _row(
+  /// One aligned label/value row. The label column is intrinsic (shared by
+  /// every row of the [Table]) and the value column absorbs the remaining
+  /// width, so both stay inside the card at any pane width or font scale.
+  TableRow _row(
     BuildContext context,
     String label,
     String value, {
@@ -187,29 +187,30 @@ class _SubnetResultCardState extends State<SubnetResultCard> {
   }) {
     final t = Theme.of(context).textTheme;
     final ext = context.ext;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 148,
-            child: Text(
-              label,
-              style: t.bodyMedium?.copyWith(color: ext.textMuted),
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.only(
+            end: AppSpacing.md,
+            top: AppSpacing.xs,
+            bottom: AppSpacing.xs,
+          ),
+          child: Text(
+            label,
+            style: t.bodyMedium?.copyWith(color: ext.textMuted),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+          child: SelectableText(
+            value,
+            style: t.bodyMedium?.copyWith(
+              fontFamily: mono ? 'monospace' : null,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          Expanded(
-            child: SelectableText(
-              value,
-              style: t.bodyMedium?.copyWith(
-                fontFamily: mono ? 'monospace' : null,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

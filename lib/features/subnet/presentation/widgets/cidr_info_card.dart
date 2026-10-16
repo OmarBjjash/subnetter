@@ -6,25 +6,24 @@ import '../../../../core/theme/app_colors_extension.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/cidr_info.dart';
 
-class CidrInfoCard extends StatefulWidget {
+/// CIDR details for one block.
+///
+/// Expansion is *controlled* by the parent so the open/closed state survives
+/// the card being scrolled out of the viewport and rebuilt.
+class CidrInfoCard extends StatelessWidget {
   final CidrInfo info;
-  final bool initiallyExpanded;
+  final bool expanded;
+  final ValueChanged<bool> onExpansionChanged;
 
   const CidrInfoCard({
     super.key,
     required this.info,
-    this.initiallyExpanded = true,
+    required this.expanded,
+    required this.onExpansionChanged,
   });
 
-  @override
-  State<CidrInfoCard> createState() => _CidrInfoCardState();
-}
-
-class _CidrInfoCardState extends State<CidrInfoCard> {
-  late bool _expanded = widget.initiallyExpanded;
-
   String _plainText() {
-    final i = widget.info;
+    final i = info;
     return 'CIDR: ${i.cidr}\n'
         '  Network         : ${i.networkAddress}\n'
         '  Broadcast       : ${i.broadcast}\n'
@@ -38,10 +37,10 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
         '  Private         : ${i.isPrivate ? 'yes' : 'no'}\n';
   }
 
-  Future<void> _copy() async {
+  Future<void> _copy(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     await Clipboard.setData(ClipboardData(text: _plainText()));
-    if (!mounted) return;
+    if (!context.mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
@@ -67,7 +66,7 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
           Material(
             color: scheme.primary,
             child: InkWell(
-              onTap: () => setState(() => _expanded = !_expanded),
+              onTap: () => onExpansionChanged(!expanded),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
@@ -79,7 +78,7 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
                     const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
-                        widget.info.cidr,
+                        info.cidr,
                         style: t.titleMedium?.copyWith(
                           color: scheme.onPrimary,
                           fontFamily: 'monospace',
@@ -96,10 +95,10 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
                         size: 18,
                         color: scheme.onPrimary,
                       ),
-                      onPressed: _copy,
+                      onPressed: () => _copy(context),
                     ),
                     Icon(
-                      _expanded
+                      expanded
                           ? Icons.expand_less_rounded
                           : Icons.expand_more_rounded,
                       color: scheme.onPrimary,
@@ -111,50 +110,50 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
           ),
 
           // ----- Body -----
+          // The open/closed state comes from the parent, so a card that is
+          // scrolled out of the viewport and rebuilt comes back in the state the
+          // user left it in instead of collapsing.
           AnimatedSize(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOutCubic,
             alignment: Alignment.topCenter,
-            child: _expanded
+            child: expanded
                 ? Padding(
                     padding: const EdgeInsets.all(AppSpacing.lg),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    child: Table(
+                      // The label column is sized to its widest label, so
+                      // every value starts at the same x and the rows read as
+                      // one aligned column. The value column takes the rest.
+                      columnWidths: const {
+                        0: IntrinsicColumnWidth(),
+                        1: FlexColumnWidth(),
+                      },
+                      defaultVerticalAlignment: TableCellVerticalAlignment.top,
                       children: [
-                        _row(context, l10n.network, widget.info.networkAddress),
-                        _row(context, l10n.broadcast, widget.info.broadcast),
-                        _row(
-                          context,
-                          l10n.firstUsable,
-                          widget.info.firstUsable,
-                        ),
-                        _row(context, l10n.lastUsable, widget.info.lastUsable),
-                        _row(context, l10n.netmask, widget.info.netmask),
-                        _row(context, l10n.wildcard, widget.info.wildcard),
+                        _row(context, l10n.network, info.networkAddress),
+                        _row(context, l10n.broadcast, info.broadcast),
+                        _row(context, l10n.firstUsable, info.firstUsable),
+                        _row(context, l10n.lastUsable, info.lastUsable),
+                        _row(context, l10n.netmask, info.netmask),
+                        _row(context, l10n.wildcard, info.wildcard),
                         _row(
                           context,
                           l10n.totalAddresses,
-                          '${widget.info.totalAddresses}',
-
+                          '${info.totalAddresses}',
                           mono: false,
                         ),
                         _row(
                           context,
                           l10n.usableHosts,
-                          '${widget.info.usableAddresses}',
+                          '${info.usableAddresses}',
                           mono: false,
                         ),
-                        _row(
-                          context,
-                          l10n.ipClass,
-                          widget.info.ipClass,
-                          mono: false,
-                        ),
+                        _row(context, l10n.ipClass, info.ipClass, mono: false),
                         _row(
                           context,
                           l10n.private,
-                          widget.info.isPrivate ? '✔' : '✘',
-                          valueColor: widget.info.isPrivate
+                          info.isPrivate ? '✔' : '✘',
+                          valueColor: info.isPrivate
                               ? Colors.green
                               : scheme.error,
                           mono: false,
@@ -169,7 +168,10 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
     );
   }
 
-  Widget _row(
+  /// One aligned label/value row. The label column is intrinsic (shared by
+  /// every row of the [Table]) and the value column absorbs the remaining
+  /// width, so both stay inside the card at any pane width or font scale.
+  TableRow _row(
     BuildContext context,
     String label,
     String value, {
@@ -178,30 +180,31 @@ class _CidrInfoCardState extends State<CidrInfoCard> {
   }) {
     final t = Theme.of(context).textTheme;
     final ext = context.ext;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 148,
-            child: Text(
-              label,
-              style: t.bodyMedium?.copyWith(color: ext.textMuted),
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.only(
+            end: AppSpacing.md,
+            top: AppSpacing.xs,
+            bottom: AppSpacing.xs,
+          ),
+          child: Text(
+            label,
+            style: t.bodyMedium?.copyWith(color: ext.textMuted),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+          child: SelectableText(
+            value,
+            style: t.bodyMedium?.copyWith(
+              fontFamily: mono ? 'monospace' : null,
+              fontWeight: FontWeight.w500,
+              color: valueColor,
             ),
           ),
-          Expanded(
-            child: SelectableText(
-              value,
-              style: t.bodyMedium?.copyWith(
-                fontFamily: mono ? 'monospace' : null,
-                fontWeight: FontWeight.w500,
-                color: valueColor,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/responsive/adaptive_scaffold.dart';
 import '../../../../l10n/app_localizations.dart';
-import 'subnet_page.dart';
-import 'cidr_page.dart';
 import '../../../settings/presentation/pages/settings_page.dart';
+import 'cidr_page.dart';
+import 'subnet_page.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key});
@@ -30,34 +31,29 @@ class _HomeShellState extends State<HomeShell> {
       const SettingsPage(key: ValueKey('settings_page')),
     ];
 
-    return Scaffold(
-      body: SafeArea(
-        child: IndexedStack(index: _index, children: pages),
-      ),
-      bottomNavigationBar: Directionality(
-        textDirection: TextDirection.ltr,
-        child: NavigationBar(
-          selectedIndex: _index,
-          onDestinationSelected: (i) => setState(() => _index = i),
-          destinations: [
-            NavigationDestination(
-              icon: const Icon(Icons.call_split_outlined),
-              selectedIcon: const Icon(Icons.call_split),
-              label: l10n.tabSubnet,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.info_outline),
-              selectedIcon: const Icon(Icons.info),
-              label: l10n.tabCidr,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.settings_outlined),
-              selectedIcon: const Icon(Icons.settings),
-              label: l10n.tabSettings,
-            ),
-          ],
+    // The selected tab lives here, so changing window size class (resize,
+    // rotate, fold/unfold) swaps only the navigation chrome around it.
+    return AdaptiveScaffold(
+      destinations: [
+        AdaptiveDestination(
+          icon: Icons.hub_outlined,
+          selectedIcon: Icons.hub_outlined,
+          label: l10n.tabSubnet,
         ),
-      ),
+        AdaptiveDestination(
+          icon: Icons.device_hub_rounded,
+          selectedIcon: Icons.device_hub_rounded,
+          label: l10n.tabCidr,
+        ),
+        AdaptiveDestination(
+          icon: Icons.settings_outlined,
+          selectedIcon: Icons.settings,
+          label: l10n.tabSettings,
+        ),
+      ],
+      selectedIndex: _index,
+      onDestinationSelected: (i) => setState(() => _index = i),
+      body: IndexedStack(index: _index, children: pages),
     );
   }
 }

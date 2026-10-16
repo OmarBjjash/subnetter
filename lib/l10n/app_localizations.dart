@@ -158,11 +158,23 @@ abstract class AppLocalizations {
   /// **'Results'**
   String get results;
 
+  /// No description provided for @resultsEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a network, then press Calculate to see its subnets.'**
+  String get resultsEmptyHint;
+
   /// No description provided for @cidrInfo.
   ///
   /// In en, this message translates to:
   /// **'CIDR information'**
   String get cidrInfo;
+
+  /// No description provided for @cidrEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an IP/CIDR, then press Calculate to see its details.'**
+  String get cidrEmptyHint;
 
   /// No description provided for @ipCidrLabel.
   ///
@@ -197,61 +209,61 @@ abstract class AppLocalizations {
   /// No description provided for @network.
   ///
   /// In en, this message translates to:
-  /// **'Network'**
+  /// **'Network: '**
   String get network;
 
   /// No description provided for @broadcast.
   ///
   /// In en, this message translates to:
-  /// **'Broadcast'**
+  /// **'Broadcast: '**
   String get broadcast;
 
   /// No description provided for @firstUsable.
   ///
   /// In en, this message translates to:
-  /// **'First usable'**
+  /// **'First usable: '**
   String get firstUsable;
 
   /// No description provided for @lastUsable.
   ///
   /// In en, this message translates to:
-  /// **'Last usable'**
+  /// **'Last usable: '**
   String get lastUsable;
 
   /// No description provided for @netmask.
   ///
   /// In en, this message translates to:
-  /// **'Netmask'**
+  /// **'Netmask: '**
   String get netmask;
 
   /// No description provided for @wildcard.
   ///
   /// In en, this message translates to:
-  /// **'Wildcard'**
+  /// **'Wildcard: '**
   String get wildcard;
 
   /// No description provided for @usableHosts.
   ///
   /// In en, this message translates to:
-  /// **'Usable hosts'**
+  /// **'Usable hosts: '**
   String get usableHosts;
 
   /// No description provided for @totalAddresses.
   ///
   /// In en, this message translates to:
-  /// **'Total addresses'**
+  /// **'Total addresses: '**
   String get totalAddresses;
 
   /// No description provided for @ipClass.
   ///
   /// In en, this message translates to:
-  /// **'IP class'**
+  /// **'IP class: '**
   String get ipClass;
 
   /// No description provided for @private.
   ///
   /// In en, this message translates to:
-  /// **'Private'**
+  /// **'Private: '**
   String get private;
 
   /// No description provided for @settingsAppearance.
@@ -265,6 +277,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get settingsLanguage;
+
+  /// No description provided for @settingsTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & definitions'**
+  String get settingsTerms;
+
+  /// No description provided for @settingsTermsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain-language explanations of the networking terms used in the app.'**
+  String get settingsTermsSubtitle;
+
+  /// No description provided for @settingsAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAbout;
+
+  /// No description provided for @appDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A modern subnet calculator for all platforms.'**
+  String get appDescription;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get versionLabel;
+
+  /// No description provided for @developer.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer: '**
+  String get developer;
+
+  /// No description provided for @termsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & definitions'**
+  String get termsTitle;
+
+  /// No description provided for @termsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain-language explanations of the networking terms used in the app.'**
+  String get termsSubtitle;
+
+  /// No description provided for @termCidr.
+  ///
+  /// In en, this message translates to:
+  /// **'CIDR'**
+  String get termCidr;
+
+  /// No description provided for @termCidrDef.
+  ///
+  /// In en, this message translates to:
+  /// **'Classless Inter-Domain Routing. A way of writing an IP address together with its network size as a single value, such as 192.168.0.0/24. The number after the slash is the prefix length.'**
+  String get termCidrDef;
+
+  /// No description provided for @termIpAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'IP address'**
+  String get termIpAddress;
+
+  /// No description provided for @termIpAddressDef.
+  ///
+  /// In en, this message translates to:
+  /// **'A unique numeric label given to a device on a network so it can send and receive data. IPv4 addresses look like 192.168.0.10.'**
+  String get termIpAddressDef;
+
+  /// No description provided for @termSubnet.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnet'**
+  String get termSubnet;
+
+  /// No description provided for @termSubnetDef.
+  ///
+  /// In en, this message translates to:
+  /// **'A smaller network carved out of a larger one. Splitting a network into subnets keeps traffic organized and reduces congestion.'**
+  String get termSubnetDef;
+
+  /// No description provided for @termSubnetMask.
+  ///
+  /// In en, this message translates to:
+  /// **'Subnet mask'**
+  String get termSubnetMask;
+
+  /// No description provided for @termSubnetMaskDef.
+  ///
+  /// In en, this message translates to:
+  /// **'A 32-bit number that marks which part of an IP address is the network and which part is the host, for example 255.255.255.0.'**
+  String get termSubnetMaskDef;
+
+  /// No description provided for @termPrefixLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefix length'**
+  String get termPrefixLength;
+
+  /// No description provided for @termPrefixLengthDef.
+  ///
+  /// In en, this message translates to:
+  /// **'How many leading bits of the address belong to the network. Written after a slash, for example /24 means the first 24 bits are the network part.'**
+  String get termPrefixLengthDef;
+
+  /// No description provided for @termNetworkAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Network address'**
+  String get termNetworkAddress;
+
+  /// No description provided for @termNetworkAddressDef.
+  ///
+  /// In en, this message translates to:
+  /// **'The very first address in a subnet, where all host bits are zero. It identifies the subnet itself and cannot be assigned to a device.'**
+  String get termNetworkAddressDef;
+
+  /// No description provided for @termBroadcastAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcast address'**
+  String get termBroadcastAddress;
+
+  /// No description provided for @termBroadcastAddressDef.
+  ///
+  /// In en, this message translates to:
+  /// **'The very last address in a subnet, where all host bits are one. Data sent here reaches every device in the subnet, so it cannot be assigned to one device.'**
+  String get termBroadcastAddressDef;
+
+  /// No description provided for @termFirstUsable.
+  ///
+  /// In en, this message translates to:
+  /// **'First usable address'**
+  String get termFirstUsable;
+
+  /// No description provided for @termFirstUsableDef.
+  ///
+  /// In en, this message translates to:
+  /// **'The first address after the network address. This is the lowest address you can actually give to a device.'**
+  String get termFirstUsableDef;
+
+  /// No description provided for @termLastUsable.
+  ///
+  /// In en, this message translates to:
+  /// **'Last usable address'**
+  String get termLastUsable;
+
+  /// No description provided for @termLastUsableDef.
+  ///
+  /// In en, this message translates to:
+  /// **'The address right before the broadcast address. This is the highest address you can give to a device.'**
+  String get termLastUsableDef;
+
+  /// No description provided for @termWildcard.
+  ///
+  /// In en, this message translates to:
+  /// **'Wildcard mask'**
+  String get termWildcard;
+
+  /// No description provided for @termWildcardDef.
+  ///
+  /// In en, this message translates to:
+  /// **'The bitwise inverse of the subnet mask. Where the mask has 1 the wildcard has 0 and vice versa; it is used in access lists and routing rules.'**
+  String get termWildcardDef;
+
+  /// No description provided for @termUsableHosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Usable hosts'**
+  String get termUsableHosts;
+
+  /// No description provided for @termUsableHostsDef.
+  ///
+  /// In en, this message translates to:
+  /// **'How many devices can be given an address in the subnet. It is the total addresses minus the network address and the broadcast address.'**
+  String get termUsableHostsDef;
+
+  /// No description provided for @termTotalAddresses.
+  ///
+  /// In en, this message translates to:
+  /// **'Total addresses'**
+  String get termTotalAddresses;
+
+  /// No description provided for @termTotalAddressesDef.
+  ///
+  /// In en, this message translates to:
+  /// **'The full count of addresses in the subnet, including the network and broadcast addresses.'**
+  String get termTotalAddressesDef;
+
+  /// No description provided for @termIpClass.
+  ///
+  /// In en, this message translates to:
+  /// **'IP class'**
+  String get termIpClass;
+
+  /// No description provided for @termIpClassDef.
+  ///
+  /// In en, this message translates to:
+  /// **'A legacy grouping of IPv4 addresses (A, B or C) based on the first bits. It is shown for reference; modern networks use CIDR instead.'**
+  String get termIpClassDef;
+
+  /// No description provided for @termPrivateIp.
+  ///
+  /// In en, this message translates to:
+  /// **'Private IP'**
+  String get termPrivateIp;
+
+  /// No description provided for @termPrivateIpDef.
+  ///
+  /// In en, this message translates to:
+  /// **'An address reserved for use inside local networks (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16). Private addresses are not routed on the public internet.'**
+  String get termPrivateIpDef;
+
+  /// No description provided for @termVlsm.
+  ///
+  /// In en, this message translates to:
+  /// **'VLSM'**
+  String get termVlsm;
+
+  /// No description provided for @termVlsmDef.
+  ///
+  /// In en, this message translates to:
+  /// **'Variable Length Subnet Masking. Splitting a network into subnets of different sizes so each one gets only as many addresses as it needs.'**
+  String get termVlsmDef;
 
   /// No description provided for @themeSystem.
   ///
@@ -314,6 +554,42 @@ abstract class AppLocalizations {
   /// **'Subnet copied to clipboard'**
   String get subNetCopied;
 
+  /// No description provided for @copyAllSubnets.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy all subnets'**
+  String get copyAllSubnets;
+
+  /// No description provided for @subnetsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'All subnets copied to clipboard'**
+  String get subnetsCopied;
+
+  /// No description provided for @copyFormatBlocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain text blocks'**
+  String get copyFormatBlocks;
+
+  /// No description provided for @copyFormatBlocksHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Aligned fields, one block per subnet. Good for files.'**
+  String get copyFormatBlocksHint;
+
+  /// No description provided for @copyFormatMarkdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Markdown table'**
+  String get copyFormatMarkdown;
+
+  /// No description provided for @copyFormatMarkdownHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Renders as a table in Slack, Notion and GitHub.'**
+  String get copyFormatMarkdownHint;
+
   /// No description provided for @subnetCountError.
   ///
   /// In en, this message translates to:
@@ -343,6 +619,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid IPv4'**
   String get invalidIPv4;
+
+  /// No description provided for @missingPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing \"/prefix\"'**
+  String get missingPrefix;
+
+  /// No description provided for @prefixOutOfRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefix must be between 0 and 32'**
+  String get prefixOutOfRange;
+
+  /// No description provided for @unexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get unexpectedError;
 
   /// No description provided for @tooManySubnets.
   ///

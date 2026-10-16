@@ -1,6 +1,8 @@
 import 'dart:math' as math;
+
 import 'package:subnetter/features/subnet/domain/entities/cidr_info.dart';
 
+import '../../../../core/errors/app_error.dart';
 import '../../../../core/utils/ip_utils.dart';
 import '../entities/subnet.dart';
 import '../entities/subnet_result.dart';
@@ -12,7 +14,7 @@ class CalculateSubnetsUseCase {
     required SubnetMode mode,
   }) {
     final parsed = parseCidr(cidr);
-    if (count < 1) throw const FormatException('Subnet count must be >= 1');
+    if (count < 1) throw const AppException(AppError.subnetCountTooSmall);
 
     final subnets = mode == SubnetMode.equalSize
         ? _equalSize(parsed.ip, parsed.prefix, count)
@@ -26,7 +28,9 @@ class CalculateSubnetsUseCase {
       inputCidr: cidr,
       requestedCount: count,
       mode: mode,
-      subnets: mode == SubnetMode.equalSize ? subnets.take(count).toList() : subnets,
+      subnets: mode == SubnetMode.equalSize
+          ? subnets.take(count).toList()
+          : subnets,
       note: note,
     );
   }
@@ -34,10 +38,13 @@ class CalculateSubnetsUseCase {
   List<Subnet> _equalSize(String ip, int prefix, int count) {
     final bits = (math.log(count) / math.ln2).ceil();
     final newPrefix = prefix + bits;
-    if (newPrefix > 32) throw const FormatException('Too many subnets for this prefix');
+    if (newPrefix > 32) throw const AppException(AppError.tooManySubnets);
     final blockSize = 1 << (32 - newPrefix);
     final base = Ipv4.toInt(ip) & _mask(prefix);
-    return List.generate(1 << bits, (i) => _build(base + i * blockSize, newPrefix));
+    return List.generate(
+      1 << bits,
+      (i) => _build(base + i * blockSize, newPrefix),
+    );
   }
 
   List<Subnet> _vlsm(String ip, int prefix, int count) {
@@ -48,8 +55,14 @@ class CalculateSubnetsUseCase {
   }
 
   void _split(int base, int prefix, int count, List<Subnet> out) {
-    if (count == 1) { out.add(_build(base, prefix)); return; }
-    if (prefix >= 32) { out.add(_build(base, prefix)); return; }
+    if (count == 1) {
+      out.add(_build(base, prefix));
+      return;
+    }
+    if (prefix >= 32) {
+      out.add(_build(base, prefix));
+      return;
+    }
     final newPrefix = prefix + 1;
     final half = 1 << (32 - newPrefix);
     final left = count ~/ 2 + count % 2;

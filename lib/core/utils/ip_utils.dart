@@ -1,12 +1,14 @@
+import '../errors/app_error.dart';
+
 class Ipv4 {
   static int toInt(String ip) {
     final parts = ip.split('.');
-    if (parts.length != 4) throw const FormatException('Invalid IPv4');
+    if (parts.length != 4) throw const AppException(AppError.invalidIpv4);
     int out = 0;
     for (final p in parts) {
       final n = int.tryParse(p);
       if (n == null || n < 0 || n > 255) {
-        throw const FormatException('Invalid octet');
+        throw const AppException(AppError.invalidOctet);
       }
       out = (out << 8) | n;
     }
@@ -59,11 +61,11 @@ class Ipv4 {
 ({String ip, int prefix}) parseCidr(String input) {
   final s = input.trim();
   final slash = s.indexOf('/');
-  if (slash < 0) throw const FormatException('Missing "/prefix"');
+  if (slash < 0) throw const AppException(AppError.missingPrefix);
   final ip = s.substring(0, slash);
   final prefix = int.tryParse(s.substring(slash + 1));
   if (prefix == null || prefix < 0 || prefix > 32) {
-    throw const FormatException('Prefix must be 0..32');
+    throw const AppException(AppError.prefixOutOfRange);
   }
   Ipv4.toInt(ip); // validates
   return (ip: ip, prefix: prefix);
