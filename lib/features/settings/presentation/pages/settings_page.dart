@@ -185,10 +185,7 @@ class _AboutCardState extends State<_AboutCard> {
                   behavior: HitTestBehavior.translucent,
                   child: Text(
                     'https://github.com/OmarBjjash/subnetter',
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
+                    style: const TextStyle(color: Colors.blue),
                   ),
                 ),
               ],
